@@ -1,6 +1,7 @@
 from keras import layers, models, optimizers
 from keras import backend as K
-
+import numpy as np
+import random
 
 class Actor:
     """Actor (Policy) Model."""
@@ -127,7 +128,7 @@ class Critic:
         self.get_action_gradients = K.function(
             inputs=[*self.model.input, K.learning_phase()],
             outputs=action_gradients)
-        
+
 class OUNoise:
     """Ornstein-Uhlenbeck process."""
 
@@ -147,8 +148,8 @@ class OUNoise:
         x = self.state
         dx = self.theta * (self.mu - x) + self.sigma * np.random.randn(len(x))
         self.state = x + dx
-        return self.state        
-        
+        return self.state
+
 from collections import namedtuple, deque
 
 class ReplayBuffer:
@@ -177,8 +178,8 @@ class ReplayBuffer:
 
     def __len__(self):
         """Return the current size of internal memory."""
-        return len(self.memory)      
-        
+        return len(self.memory)
+
 class DDPG():
 
     def __init__(self, task):
